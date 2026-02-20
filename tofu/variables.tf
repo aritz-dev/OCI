@@ -11,3 +11,20 @@ variable "region" {
   # no default value, asking user to explicitly set this variable's value. see codingconventions.adoc
   # List of regions: https://docs.cloud.oracle.com/iaas/Content/General/Concepts/regions.htm#ServiceAvailabilityAcrossRegions
 }
+
+variable "instances" {
+  type = map(object({
+    fault_domain  = string
+    subnet        =string
+  }))
+  default = {
+    "beta" = {
+      fault_domain="FAULT-DOMAIN-1"
+      subnet="10.0.0.0/24"
+    }
+    "prod" = {
+      fault_domain="FAULT-DOMAIN-2"
+      subnet="10.0.1.0/24"
+    }
+  }
+}
