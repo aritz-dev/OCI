@@ -58,9 +58,15 @@ resource "oci_core_security_list" "fw" {
       max = 22
     }
   }
+  ingress_security_rules {
+    protocol = "1"        # ICMP
+    source   = "0.0.0.0/0"
+    icmp_options {
+      type = 8            # (ping)
+    }
+  }
 }
 
-# Una subnet por instancia
 resource "oci_core_subnet" "subnet" {
   for_each = var.instances
 
@@ -89,27 +95,22 @@ data "oci_core_images" "ubuntu" {
 resource "oci_core_instance" "instance" {
   for_each = var.instances
 
-  # 1. Nombre
   display_name        = each.key
   compartment_id      = var.compartment_id
   availability_domain = "KqKw:EU-MADRID-1-AD-1"
   fault_domain        = each.value.fault_domain
 
-  # 2. Imagen
   source_details {
     source_type             = "image"
     source_id               = data.oci_core_images.ubuntu.images[0].id
-    boot_volume_size_in_gbs = 100  # 100GB cada una → 200GB total
+    boot_volume_size_in_gbs = 100 
   }
-
-  # 3. Shape — Always Free: máx 4 OCPU y 24GB RAM en total entre instancias ARM
   shape = "VM.Standard.A1.Flex"
   shape_config {
     ocpus         = 2
     memory_in_gbs = 12
   }
 
-  # 4. Red
   create_vnic_details {
     subnet_id        = oci_core_subnet.subnet[each.key].id
     assign_public_ip = true
