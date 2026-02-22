@@ -1,0 +1,27 @@
+- name: Remove broken docker sources
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/docker.sources
+    state: absent
+
+- name: Uninstall the Docker Engine, CLI, containerd, and Docker Compose packages
+  ansible.builtin.apt:
+    name:
+      - ocker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-buildx-plugin 
+      - docker-compose-plugin 
+      - docker-ce-rootless-extras
+    state: absent
+    purge: true
+
+- name: delete all images, containers, volumes, source list and keyrings
+  ansible.builtin.file:
+    path: 
+      - /var/lib/docker
+      - /var/lib/containerd
+      - /etc/apt/sources.list.d/docker.sources
+      - /etc/apt/keyrings/docker.asc
+    state: absent
+  
+

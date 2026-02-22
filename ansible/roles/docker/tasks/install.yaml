@@ -1,0 +1,47 @@
+# Add Docker's official GPG key:
+- name: Update and install packages
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: true
+
+- name: Create directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Download GPG Key 
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+
+# Add the repository to Apt sources:
+- name: Add repository to apt sources
+  ansible.builtin.shell:
+    cmd: |
+      tee /etc/apt/sources.list.d/docker.sources <<EOF 
+      Types: deb
+      URIs: https://download.docker.com/linux/ubuntu
+      Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+      Components: stable
+      Signed-By: /etc/apt/keyrings/docker.asc
+      EOF
+
+- name: Update
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: install docker
+  ansible.builtin.apt:
+    name:
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-buildx-plugin 
+      - docker-compose-plugin
+    state: present
+    update_cache: true
