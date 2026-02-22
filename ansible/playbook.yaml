@@ -1,0 +1,14 @@
+- name: My first play
+  hosts: myhosts
+  tasks:
+    - name: Ping my hosts
+      ansible.builtin.ping:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: Hello world
+    - name: apt 
+      ansible.builtin.apt:
+        update_cache:  true
+        upgrade: "dist"
+      become: true  
