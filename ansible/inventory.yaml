@@ -1,0 +1,9 @@
+myhosts:
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa
+  hosts:
+    prod:
+      ansible_host: 79.72.49.34
+    beta:
+      ansible_host: 79.72.61.73
