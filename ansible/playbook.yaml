@@ -1,6 +1,9 @@
-- name: Configurar servidores
+- name: My first play
   hosts: myhosts
-  become: true
-  roles:
-    - ping
-    - docker
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+
+   - name: Print message
+     ansible.builtin.debug:
+       msg: Hello world

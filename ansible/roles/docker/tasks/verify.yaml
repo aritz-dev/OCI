@@ -1,8 +1,0 @@
-- name: Verificar instalación de Docker
-  ansible.builtin.command: docker --version
-  register: docker_version
-  changed_when: false
-
-- name: Mostrar versión instalada
-  ansible.builtin.debug:
-    msg: "{{ docker_version.stdout }}"

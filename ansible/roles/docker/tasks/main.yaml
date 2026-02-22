@@ -1,3 +1,0 @@
-- ansible.builtin.import_tasks: uninstall.yaml
-- ansible.builtin.import_tasks: install.yaml
-- ansible.builtin.import_tasks: verify.yaml
